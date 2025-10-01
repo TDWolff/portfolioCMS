@@ -1,0 +1,324 @@
+body {
+  background-color: #f8f9fa;
+  color: #343a40;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  margin-top: 20px;
+}
+
+.rounded-box {
+  background-color: #bddfff;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: #343a40;
+  text-align: center;
+  height: 370px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #6a6a6a;
+  padding-top: 20px;
+}
+
+a {
+  color: #343a40;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #bddfff;
+}
+
+/* General Typography & Links */
+body {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif;
+    background-color: #f8fbff;
+    color: #1a3d7c;
+}
+
+a {
+    color: #004080;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #0055aa;
+}
+
+/* Hero Sections */
+.hero,
+.hero-about,
+.projects-hero {
+    background: linear-gradient(to right, #e0f0ff, #d0e7ff);
+    padding: 4rem 2rem;
+    text-align: center;
+    border-radius: 12px;
+    margin-bottom: 3rem;
+}
+
+.hero h1,
+.hero-about h1,
+.projects-hero h1 {
+    color: #004080;
+    font-weight: 700;
+}
+
+.hero p,
+.hero-about p,
+.projects-hero p {
+    color: #1a3d7c;
+    font-size: 1.2rem;
+}
+
+/* Project Cards */
+.project-card {
+    border: 1px solid #d6eaff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    background-color: #f8fbff;
+    transition: all 0.2s ease-in-out;
+    height: 100%;
+    box-shadow: 0 2px 8px rgba(210, 230, 255, 0.15);
+    margin-bottom: 1.5rem;
+}
+
+.project-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 64, 128, 0.1);
+    transform: translateY(-3px);
+}
+
+.project-card h5 {
+    color: #0055aa;
+    font-weight: 600;
+}
+
+.project-card p {
+    color: #1a3d7c;
+}
+
+.project-card a,
+a.project-link {
+    color: #004080;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.project-card a:hover,
+a.project-link:hover {
+    text-decoration: underline;
+    color: #0055aa;
+}
+
+/* Resume Page */
+.resume-container {
+    max-width: 900px;
+    margin: 3rem auto 5rem;
+    padding: 0 1rem;
+}
+
+.resume-section {
+    background-color: #f8fbff;
+    border: 1px solid #d6eaff;
+    border-radius: 10px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 2.5rem;
+    box-shadow: 0 4px 8px rgb(210 230 255 / 0.4);
+}
+
+.resume-section h2 {
+    color: #0055aa;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.resume-section h2 a {
+    color: #0055aa;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.resume-section h2 a:hover {
+    color: #003366;
+}
+
+.resume-section p {
+    color: #1a3d7c;
+    line-height: 1.5;
+    font-size: 1rem;
+}
+
+.resume-section a {
+    color: #004080;
+    text-decoration: underline;
+}
+
+hr.resume-divider {
+    border: none;
+    border-top: 2px solid #d6eaff;
+    margin: 3rem 0;
+}
+
+.contact-info {
+    text-align: center;
+    color: #1a3d7c;
+    font-size: 1.1rem;
+}
+
+.contact-info a {
+    color: #004080;
+    text-decoration: underline;
+}
+
+/* About Page */
+.section-heading {
+    color: #0055aa;
+    margin-top: 2rem;
+    font-weight: 600;
+}
+
+.skill-card {
+    background-color: #f8fbff;
+    border: 1px solid #d6eaff;
+    border-radius: 10px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.skill-card strong {
+    color: #004080;
+}
+
+ul {
+    padding-left: 1.2rem;
+}
+
+/* Footer */
+.footer {
+    background-color: #f1f8ff;
+    color: #333;
+    padding: 1.5rem 0;
+    border-top: 1px solid #d6eaff;
+}
+
+.footer a {
+    color: #004080;
+    text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .hero,
+    .hero-about,
+    .projects-hero {
+        padding: 2rem 1rem;
+    }
+    .resume-container {
+        padding: 0 0.5rem;
+    }
+    .project-card {
+        padding: 1rem;
+    }
+}
+
+.tutorial-sidebar {
+    background-color: #f1f8ff;
+    border-right: 1px solid #d6eaff;
+    min-height: 100vh;
+  }
+  
+  .tutorial-sidebar h5 {
+    font-weight: 600;
+    color: #0055aa;
+  }
+  
+  .tutorial-sidebar .accordion-button {
+    background-color: #f8fbff;
+    border: none;
+    color: #004080;
+  }
+  
+  .tutorial-sidebar .accordion-button:focus {
+    box-shadow: none;
+  }
+  
+  .tutorial-sidebar .accordion-button:not(.collapsed) {
+    background-color: #e6f3ff;
+    color: #003366;
+  }
+  
+  .tutorial-sidebar .nav-link {
+    font-size: 0.95rem;
+    color: #1a3d7c;
+    padding-left: 1rem;
+    display: block;
+    margin: 0.25rem 0;
+  }
+  
+  .tutorial-sidebar .nav-link:hover {
+    color: #0055aa;
+    text-decoration: underline;
+  }
+  
+
+  .tutorial-sidebar .accordion-body ul li:nth-child(odd) {
+    background-color: #ffffff;
+  }
+  
+  .tutorial-sidebar .accordion-body ul li:nth-child(even) {
+    background-color: #fafdff; /* soft grey-blue that matches your palette */
+  }
+  
+  .tutorial-sidebar .accordion-body ul li a {
+    display: block;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+  }
+  
+  .tutorial-sidebar .accordion-body ul li a:hover {
+    background-color: #d6eaff;
+    color: #003366;
+    text-decoration: none;
+  }
+
+  .tutorial-section {
+    background-color: #f8fbff;       /* very light blue */
+    border: 1px solid #d6eaff;       /* soft blue border */
+    border-radius: 12px;
+    padding: 2rem 2.5rem;
+    box-shadow: 0 4px 12px rgb(210 230 255 / 0.4);
+    color: #1a3d7c;
+    max-width: 900px;
+    margin: 0 auto 3rem auto;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  }
+  
+  .tutorial-section h2 {
+    color: #0055aa;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+    .tutorial-section p {
+        color: #1a3d7c;
+        line-height: 1.6;
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .tutorial-section a {
+        color: #004080;
+        text-decoration: underline;
+    }
+
+    .tutorial-section a:hover {
+        color: #003366;
+        text-decoration: none;
+    }

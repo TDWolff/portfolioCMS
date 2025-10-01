@@ -1,0 +1,10 @@
+version: '3'
+services:
+        web:
+                image: portfoliocms
+                build: .
+                ports:
+                        - "8454:8454"
+                volumes:
+                        - ./instance:/instance
+                restart: unless-stopped
