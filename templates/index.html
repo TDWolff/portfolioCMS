@@ -151,13 +151,12 @@
             try {
                 await new Promise(resolve => setTimeout(resolve, index * 200));
                 
-                const response = await fetch('/api/websites/test', {
+                const response = await fetch('/pokeURL', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ 
-                        name: website.name, 
                         url: website.url 
                     })
                 });
@@ -390,12 +389,12 @@
         button.disabled = true;
 
         try {
-            const response = await fetch('/api/websites/test', {
+            const response = await fetch('/pokeURL', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ name: name, url: url })
+                body: JSON.stringify({ url: url })
             });
 
             const data = await response.json();
