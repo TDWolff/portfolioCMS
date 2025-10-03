@@ -3,7 +3,58 @@
 
 {% block body %}
 <div class="container mt-5">
-
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <h2 class="text-center mb-4">Login</h2>
+            <form id="loginForm">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="username" name="username" autocomplete="username" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" autocomplete="current-password" required>
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </div>
+                <div id="errorMsg" class="text-danger mt-2" style="display:none;"></div>
+            </form>
+        </div>
+    </div>
 </div>
 
+<script>
+document.getElementById("loginForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+
+    try {
+        const response = await fetch("/loginUSR", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ username, password })
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+            console.log("Login successful:", data.message);
+            window.location.href = "/";
+        } else {
+            const errorMsg = document.getElementById("errorMsg");
+            errorMsg.textContent = data.error || data.message || "Login failed.";
+            errorMsg.style.display = "block";
+        }
+    } catch (err) {
+        const errorMsg = document.getElementById("errorMsg");
+        errorMsg.textContent = "An error occurred.";
+        errorMsg.style.display = "block";
+    }
+});
+</script>
 {% endblock %}
