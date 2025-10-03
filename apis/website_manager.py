@@ -2,7 +2,11 @@ import csv
 import os
 from apis.websiteQuery import testWebsite
 
-CSV_FILE_PATH = 'instances/websites.csv'
+# Use absolute path based on the current file's location
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+CSV_FILE_PATH = os.path.join(BASE_DIR, 'instances', 'websites.csv')
+
+print(f"CSV_FILE_PATH: {CSV_FILE_PATH}")  # Debug logging
 
 def normalize_url(url):
     """Normalize URL by removing trailing slash for comparison"""
@@ -12,18 +16,41 @@ def normalize_url(url):
 
 def ensure_csv_exists():
     """Create CSV file and directory if they don't exist"""
-    os.makedirs('instances', exist_ok=True)
+    instances_dir = os.path.join(BASE_DIR, 'instances')
+    print(f"Ensuring directory exists: {instances_dir}")  # Debug
+    
+    # Create directory with proper permissions
+    os.makedirs(instances_dir, mode=0o755, exist_ok=True)
+    
     if not os.path.exists(CSV_FILE_PATH):
-        with open(CSV_FILE_PATH, 'w', newline='', encoding='utf-8') as file:
-            writer = csv.writer(file)
-            writer.writerow(['name', 'url', 'status'])
-            writer.writerow(['torinwolff.com', 'https://torinwolff.com', 'active'])
+        print(f"Creating CSV file: {CSV_FILE_PATH}")  # Debug
+        try:
+            with open(CSV_FILE_PATH, 'w', newline='', encoding='utf-8') as file:
+                writer = csv.writer(file)
+                writer.writerow(['name', 'url', 'status'])
+                writer.writerow(['homepage', 'https://torinwolff.com', 'active'])
+            
+            # Set file permissions
+            os.chmod(CSV_FILE_PATH, 0o666)
+            print(f"CSV file created successfully: {CSV_FILE_PATH}")
+        except Exception as e:
+            print(f"Error creating CSV file: {e}")
+            raise
+    else:
+        print(f"CSV file already exists: {CSV_FILE_PATH}")
 
 def get_all_websites():
     """Get all websites from CSV"""
     ensure_csv_exists()
     websites = []
+    
+    print(f"Reading from CSV: {CSV_FILE_PATH}")  # Debug
+    
     try:
+        if not os.path.exists(CSV_FILE_PATH):
+            print(f"CSV file does not exist: {CSV_FILE_PATH}")
+            return websites
+            
         with open(CSV_FILE_PATH, 'r', newline='', encoding='utf-8') as file:
             reader = csv.DictReader(file)
             for row in reader:
@@ -33,10 +60,13 @@ def get_all_websites():
                     websites.append(cleaned_row)
                 else:
                     print(f"Skipping malformed row: {row}")
+                    
+        print(f"Loaded {len(websites)} websites from CSV")  # Debug
     except FileNotFoundError:
-        pass
+        print(f"CSV file not found: {CSV_FILE_PATH}")
     except Exception as e:
         print(f"Error reading CSV: {e}")
+        
     return websites
 
 def add_website(name, url):
@@ -45,28 +75,43 @@ def add_website(name, url):
     
     # Clean the inputs
     name = name.strip()
-    url = normalize_url(url.strip())  # Normalize URL
+    url = normalize_url(url.strip())
+    
+    print(f"Adding website: {name} -> {url}")  # Debug
     
     # Test the website first
     is_active = testWebsite(url)
     status = 'active' if is_active else 'inactive'
     
-    # Check if file ends with newline, if not add one
     try:
-        with open(CSV_FILE_PATH, 'r', encoding='utf-8') as file:
-            content = file.read()
-            if content and not content.endswith('\n'):
-                with open(CSV_FILE_PATH, 'a', encoding='utf-8') as append_file:
-                    append_file.write('\n')
-    except:
-        pass
-    
-    # Append new website
-    with open(CSV_FILE_PATH, 'a', newline='', encoding='utf-8') as file:
-        writer = csv.writer(file)
-        writer.writerow([name, url, status])
-    
-    return {'name': name, 'url': url, 'status': status}
+        # Check if file ends with newline, if not add one
+        if os.path.exists(CSV_FILE_PATH):
+            with open(CSV_FILE_PATH, 'r', encoding='utf-8') as file:
+                content = file.read()
+                if content and not content.endswith('\n'):
+                    with open(CSV_FILE_PATH, 'a', encoding='utf-8') as append_file:
+                        append_file.write('\n')
+        
+        # Append new website
+        with open(CSV_FILE_PATH, 'a', newline='', encoding='utf-8') as file:
+            writer = csv.writer(file)
+            writer.writerow([name, url, status])
+            
+        print(f"Successfully added website: {name}")  # Debug
+        
+        # Verify the write by reading it back
+        websites = get_all_websites()
+        added_website = next((w for w in websites if w['name'] == name and w['url'] == url), None)
+        if added_website:
+            print(f"Verified: Website {name} was added successfully")
+            return added_website
+        else:
+            print(f"Warning: Website {name} was not found after adding")
+            return {'name': name, 'url': url, 'status': status}
+            
+    except Exception as e:
+        print(f"Error adding website: {e}")
+        raise
 
 def update_website_status(name, url):
     """Update website status by testing the URL"""
