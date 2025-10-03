@@ -389,12 +389,12 @@
         button.disabled = true;
 
         try {
-            const response = await fetch('/pokeURL', {
+            const response = await fetch('/api/websites/test', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ url: url })
+                body: JSON.stringify({ name: name, url: url })
             });
 
             const data = await response.json();
