@@ -6,5 +6,5 @@ services:
                 ports:
                         - "8454:8454"
                 volumes:
-                        - ./instance:/instance
+                        - ./instances:/app/instances
                 restart: unless-stopped

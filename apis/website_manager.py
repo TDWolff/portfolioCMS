@@ -4,9 +4,18 @@ from apis.websiteQuery import testWebsite
 
 # Use absolute path based on the current file's location
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Check if running in Docker container
+if os.path.exists('/.dockerenv'):
+    print("Running in Docker container")
+    # Ensure we're using the mounted volume path
+    BASE_DIR = '/app'
+    
 CSV_FILE_PATH = os.path.join(BASE_DIR, 'instances', 'websites.csv')
 
+print(f"BASE_DIR: {BASE_DIR}")  # Debug logging
 print(f"CSV_FILE_PATH: {CSV_FILE_PATH}")  # Debug logging
+print(f"Running in Docker: {os.path.exists('/.dockerenv')}")  # Debug logging
 
 def normalize_url(url):
     """Normalize URL by removing trailing slash for comparison"""
@@ -18,9 +27,16 @@ def ensure_csv_exists():
     """Create CSV file and directory if they don't exist"""
     instances_dir = os.path.join(BASE_DIR, 'instances')
     print(f"Ensuring directory exists: {instances_dir}")  # Debug
+    print(f"Current working directory: {os.getcwd()}")  # Debug
+    print(f"BASE_DIR: {BASE_DIR}")  # Debug
+    print(f"__file__: {__file__}")  # Debug
     
     # Create directory with proper permissions
     os.makedirs(instances_dir, mode=0o755, exist_ok=True)
+    
+    # Check if directory is writable
+    if os.path.exists(instances_dir):
+        print(f"Directory exists and is writable: {os.access(instances_dir, os.W_OK)}")  # Debug
     
     if not os.path.exists(CSV_FILE_PATH):
         print(f"Creating CSV file: {CSV_FILE_PATH}")  # Debug
