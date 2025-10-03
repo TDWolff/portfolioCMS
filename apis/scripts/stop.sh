@@ -1,5 +1,5 @@
 cd
 
-docker-compose up -d --build
+docker-compose down
 
 echo server stopping
