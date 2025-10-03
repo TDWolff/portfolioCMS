@@ -41,11 +41,11 @@ def start(id):
         exists, valid_name = checkIDInCSVNames(id)
         if not exists:
             return {"success": False, "error": f"ID '{id}' not found in CSV"}
-        #change first line in start.sh to use the valid_name
+        #change second line in start.sh to use the valid_name
         with open(startPath, 'r') as file:
             lines = file.readlines()
-        if lines:
-            lines[0] = f"cd {valid_name}\n"  # Adjust this line as needed
+        if len(lines) >= 2:
+            lines[1] = f"cd {valid_name}\n"  # Replace the second line
             with open(startPath, 'w') as file:
                 file.writelines(lines)
         # start the server using the startPath script
@@ -63,7 +63,13 @@ def stop(id):
         exists, valid_name = checkIDInCSVNames(id)
         if not exists:
             return {"success": False, "error": f"ID '{id}' not found in CSV"}
-        
+        #change second line in stop.sh to use the valid_name
+        with open(stopPath, 'r') as file:
+            lines = file.readlines()
+        if len(lines) >= 2:
+            lines[1] = f"cd {valid_name}\n"  # Replace the second line
+            with open(stopPath, 'w') as file:
+                file.writelines(lines)
         # stop the server using the stopPath script
         result = subprocess.run(['bash', stopPath], check=True, capture_output=True, text=True)
         return {"success": True, "message": "Server stopped successfully", "output": result.stdout}
