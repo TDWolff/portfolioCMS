@@ -297,11 +297,21 @@
             `<a href="${website.url}" target="_blank" class="btn btn-outline-primary btn-sm">View</a>` : 
             `<a href="#" data-url="${website.url}" class="btn btn-outline-secondary btn-sm disabled">View</a>`;
         
+        // Dynamic start/stop button based on status
+        const serverButton = isActive ? 
+            `<button class="btn btn-danger btn-sm me-1" onclick="stopServer(this)" data-action="stop">
+                <i class="fa fa-stop"></i> Stop
+            </button>` : 
+            `<button class="btn btn-success btn-sm me-1" onclick="startServer(this)" data-action="start">
+                <i class="fa fa-play"></i> Start
+            </button>`;
+        
         row.innerHTML = `
             <td>${website.name}</td>
             <td><span class="badge ${statusClasses[website.status]}">${website.status.charAt(0).toUpperCase() + website.status.slice(1)}</span></td>
             <td>${linkButton}</td>
             <td>
+                ${serverButton}
                 <button class="btn btn-info btn-sm me-1" onclick="testWebsite(this)">Test</button>
                 <button class="btn btn-warning btn-sm me-1" onclick="editItem(this)">Edit</button>
                 <button class="btn btn-danger btn-sm" onclick="deleteItem(this)">Delete</button>
@@ -528,6 +538,109 @@
             }
         } catch (error) {
             alert('Error deleting website: ' + error.message);
+        }
+    }
+
+    // Start server
+    async function startServer(button) {
+        const row = button.closest('tr');
+        const serverName = row.cells[0].textContent;
+        
+        const originalText = button.innerHTML;
+        button.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Starting...';
+        button.disabled = true;
+        
+        try {
+            const response = await fetch('/start', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id: serverName })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                // Update the button to show stop instead
+                button.outerHTML = `<button class="btn btn-danger btn-sm me-1" onclick="stopServer(this)" data-action="stop">
+                    <i class="fa fa-stop"></i> Stop
+                </button>`;
+                
+                // Update status badge to active
+                const statusBadge = row.cells[1].querySelector('.badge');
+                statusBadge.className = 'badge bg-success';
+                statusBadge.textContent = 'Active';
+                
+                // Enable view button if it was disabled
+                const viewButton = row.cells[2].querySelector('a');
+                if (viewButton.classList.contains('disabled')) {
+                    viewButton.classList.remove('btn-outline-secondary', 'disabled');
+                    viewButton.classList.add('btn-outline-primary');
+                    viewButton.setAttribute('target', '_blank');
+                }
+                
+                alert('Server started successfully: ' + data.message);
+            } else {
+                alert('Failed to start server: ' + data.error);
+                button.innerHTML = originalText;
+                button.disabled = false;
+            }
+        } catch (error) {
+            alert('Error starting server: ' + error.message);
+            button.innerHTML = originalText;
+            button.disabled = false;
+        }
+    }
+
+    // Stop server
+    async function stopServer(button) {
+        const row = button.closest('tr');
+        const serverName = row.cells[0].textContent;
+        
+        const originalText = button.innerHTML;
+        button.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Stopping...';
+        button.disabled = true;
+        
+        try {
+            const response = await fetch('/stop', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id: serverName })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                // Update the button to show start instead
+                button.outerHTML = `<button class="btn btn-success btn-sm me-1" onclick="startServer(this)" data-action="start">
+                    <i class="fa fa-play"></i> Start
+                </button>`;
+                
+                // Update status badge to inactive
+                const statusBadge = row.cells[1].querySelector('.badge');
+                statusBadge.className = 'badge bg-secondary';
+                statusBadge.textContent = 'Inactive';
+                
+                // Disable view button
+                const viewButton = row.cells[2].querySelector('a');
+                viewButton.classList.remove('btn-outline-primary');
+                viewButton.classList.add('btn-outline-secondary', 'disabled');
+                viewButton.removeAttribute('target');
+                viewButton.href = '#';
+                
+                alert('Server stopped successfully: ' + data.message);
+            } else {
+                alert('Failed to stop server: ' + data.error);
+                button.innerHTML = originalText;
+                button.disabled = false;
+            }
+        } catch (error) {
+            alert('Error stopping server: ' + error.message);
+            button.innerHTML = originalText;
+            button.disabled = false;
         }
     }
 
