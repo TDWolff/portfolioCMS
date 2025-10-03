@@ -1,3 +1,5 @@
 /instances
 *.csv
 instances/websites.csv
+
+.env
