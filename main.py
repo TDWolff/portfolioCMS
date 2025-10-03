@@ -5,6 +5,7 @@ import secrets
 import os
 from apis.registry import registryUSRLOGIN
 from apis.website_manager import get_all_websites, add_website, update_website_status, delete_website, edit_website, repair_csv_file
+from apis.serversService import start, stop
 
 app = flask.Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', secrets.token_hex(32))
@@ -22,11 +23,31 @@ def login_required(f):
 def index():
     return flask.render_template('index.html')
 
+@app.route('/servers')
+@login_required
+def servers():
+    return flask.render_template('servers.html')
+
+
 @app.route('/login', methods=['GET'])
 def login():
     if 'user_id' in session:
         return redirect(url_for('index'))
     return flask.render_template('login.html')
+
+@app.route('/start', methods=['POST'])
+def startService():
+    data = flask.request.get_json()
+    id = data.get('id')
+    print(f"Starting server with id: {id}...")
+    return start(id)
+    
+@app.route('/stop', methods=['POST'])
+def stopService():
+    data = flask.request.get_json()
+    id = data.get('id')
+    print(f"Stopping server with id: {id}...")
+    return stop(id)
 
 @app.route('/loginUSR', methods=['POST'])
 def loginUSR():
