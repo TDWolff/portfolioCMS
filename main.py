@@ -192,21 +192,21 @@ def pokeURL():
         print(f"Website {url} is not reachable.")
         return flask.jsonify({"success": False, "error": f"Website {url} is not reachable."}), 400
 
-@app.after_request
-def after_request(response):
-    # Updated CSP to allow external connections for website testing
-    response.headers['Content-Security-Policy'] = (
-        "default-src 'self'; "
-        "script-src 'self' 'unsafe-inline'; "
-        "style-src 'self' 'unsafe-inline'; "
-        "font-src 'self'; "
-        "img-src 'self' data:; "
-        "connect-src 'self' https: http:;"  # Allow connections to any HTTPS/HTTP site for testing
-    )
-    response.headers['X-Content-Type-Options'] = 'nosniff'
-    response.headers['X-Frame-Options'] = 'DENY'
-    response.headers['X-XSS-Protection'] = '1; mode=block'
-    return response
+# @app.after_request
+# def after_request(response):
+#     # Updated CSP to allow external connections for website testing
+#     response.headers['Content-Security-Policy'] = (
+#         "default-src 'self'; "
+#         "script-src 'self' 'unsafe-inline'; "
+#         "style-src 'self' 'unsafe-inline'; "
+#         "font-src 'self'; "
+#         "img-src 'self' data:; "
+#         "connect-src 'self' https: http:;"  # Allow connections to any HTTPS/HTTP site for testing
+#     )
+#     response.headers['X-Content-Type-Options'] = 'nosniff'
+#     response.headers['X-Frame-Options'] = 'DENY'
+#     response.headers['X-XSS-Protection'] = '1; mode=block'
+#     return response
 
 if __name__ == "__main__":
     boolean_debug = True
